@@ -47,7 +47,7 @@ int contador;          // contador para TMR0
 void __interrupt () isr (void){
     
     if (PIR1bits.ADIF){                           // Revisar si fue interrupción del ADC
-        if (ADCON0bits.CHS == 0){                 // Si es el canal de l AN0
+        if (ADCON0bits.CHS == 0){                 // Si es el canal de 0 AN0
             CCPR1L = (ADRESH>>1)+31;              // Corriento de ADRESH de 1 bit (0-127) -- 31 (bits mas sig. controlen el mov. total del servo)
             CCP1CONbits.DC1B = (ADRESH & 0b01);   // Controlar los últimos bit para más prescision (bit menos sig. del ADRESH)
             CCP1CONbits.DC1B0 = (ADRESL>>7);      // Para obtener el bit más sig. del ADRESL
@@ -57,7 +57,7 @@ void __interrupt () isr (void){
             CCP1CONbits.DC1B = (ADRESH & 0b01);   // Controlar los últimos bit para más prescision (bit menos sig. del ADRESH)
             CCP1CONbits .DC1B0 = (ADRESL>>7);      // Para obtener el bit más sig. del ADRESL
         }
-        else if (ADCON0bits.CHS == 2){            // Si es el canal de l AN2
+        else if (ADCON0bits.CHS == 2){            // Si es el canal de 2 AN2
             conversion= (ADRESH>>6)+1;            // Corriento de ADRESH de 6 bit (0-4)
         }
         PIR1bits.ADIF = 0;                        // Limpiar la interrucpción del ADC
@@ -91,7 +91,7 @@ void main(void) {
                 ADCON0bits.CHS = 2;         // Cambio de canal al 2
             }
             else if (ADCON0bits.CHS == 2){  // Si el canal es 2
-               ADCON0bits.CHS = 0;          // Cambio de canal al 2
+               ADCON0bits.CHS = 0;          // Cambio de canal al 0
             }
             __delay_us(50);                 // Tiempo de adquisición
             ADCON0bits.GO = 1;              // Iniciamos proceso de conversión
@@ -112,7 +112,7 @@ void main(void) {
 void setup(void){
     
     // Configuracion de entradas y salidas
-    ANSEL = 0b00000111;         // AN0 como entrada analógica;
+    ANSEL = 0b00000111;         // AN0 - AN2 como entrada analógica;
     ANSELH = 0;                 // Usaremos I/O digitales
     
     TRISA = 0xFF;               // PORTA como entrada  
@@ -138,7 +138,7 @@ void setup(void){
     
     //Configuración del PWM
     TRISCbits.TRISC2 = 1;       // RC2//CCP1 como entrada
-    TRISCbits.TRISC1 = 1;       // RC2//CCP2 como entrada
+    TRISCbits.TRISC1 = 1;       // RC1//CCP2 como entrada
     PR2 = 249;                  // periodo de 4ms
    
     //Configuración del CCP
