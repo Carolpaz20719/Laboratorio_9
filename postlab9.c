@@ -48,7 +48,7 @@ void __interrupt () isr (void){
     
     if (PIR1bits.ADIF){                           // Revisar si fue interrupción del ADC
         if (ADCON0bits.CHS == 0){                 // Si es el canal de l AN0
-            CCPR1L = (ADRESH>>1)+31;              // Corriento de ADRESH de 1 bit (0-127) -- 31 (bit mas sig. controlar el mov. total del servo)
+            CCPR1L = (ADRESH>>1)+31;              // Corriento de ADRESH de 1 bit (0-127) -- 31 (bits mas sig. controlen el mov. total del servo)
             CCP1CONbits.DC1B = (ADRESH & 0b01);   // Controlar los últimos bit para más prescision (bit menos sig. del ADRESH)
             CCP1CONbits.DC1B0 = (ADRESL>>7);      // Para obtener el bit más sig. del ADRESL
         }
